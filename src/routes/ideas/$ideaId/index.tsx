@@ -2,6 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 import type { Idea } from '@/types';
 import api from '@/lib/axios';
+import { IoMdArrowBack } from 'react-icons/io';
 
 const fetchIdea = async (ideaId: string): Promise<Idea> => {
   const res = await api.get(`/ideas/${ideaId}`);
@@ -26,8 +27,10 @@ function IdeaDetailsPage() {
   const { data: idea } = useSuspenseQuery(ideaQueryOptions(ideaId));
   return (
     <div className="p-4">
-      <Link to="/ideas" className="text-blue-500 uderline block mb-4">
-        Bact to Ideas
+      <Link to="/ideas" className="text-blue-500 underline block mb-4">
+        <div className="flex items-center">
+          <IoMdArrowBack className="mr-2" /> Back to Ideas
+        </div>
       </Link>
       <h2 className="text-2xl font-bold">{idea.title}!</h2>
       <p className="mt-2">{idea.description}</p>
