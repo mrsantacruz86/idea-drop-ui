@@ -1,14 +1,8 @@
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
-import {
-  queryOptions,
-  useSuspenseQuery,
-  useMutation,
-} from '@tanstack/react-query';
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 import { Lightbulb } from 'lucide-react';
-import { fetchIdeas, deleteIdeas } from '@/api/ideas';
+import { fetchIdeas } from '@/api/ideas';
 import IdeaCard from '@/components/IdeaCard';
-
-import type { Idea } from '@/types';
 
 const ideasQueryOptions = () =>
   queryOptions({
