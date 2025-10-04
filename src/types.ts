@@ -3,7 +3,7 @@ export type Idea = {
   title: string;
   summary: string;
   description: string;
-  tag: string[];
+  tags: string[];
   createdAt: string;
   user: string;
 };

@@ -1,6 +1,8 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import type { Idea } from '@/types';
+import { createIdea } from '@/api/ideas';
 
 export const Route = createFileRoute('/ideas/new/')({
   component: NewIdeaPage,
@@ -13,10 +15,40 @@ function NewIdeaPage() {
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState('');
 
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: createIdea,
+    onSuccess: () => {
+      navigate({ to: '/ideas' });
+    },
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!title.trim() || !summary.trim() || !description.trim()) {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    try {
+      await mutateAsync({
+        title,
+        summary,
+        description,
+        tags: tags
+          .split(',')
+          .map((tag) => tag.trim())
+          .filter((tag) => tag !== ''),
+      });
+    } catch (error) {
+      console.log(error);
+      alert('Something went wrong');
+    }
+  };
+
   return (
     <div className="space-y-6">
       <h1 className="tex-3xl font-bold mb-6">Create new Idea</h1>
-      <form className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label
             htmlFor="title"
@@ -86,12 +118,14 @@ function NewIdeaPage() {
         </div>
         <div className="mt-5">
           <button
+            type="submit"
+            disabled={isPending}
             className="block w-full bg-blue-600 
-          hover:bg-blue-700 text-white font-semibold 
-          px-6 py-2 rounded-md transition 
-          disabled:opacity-50 disabled:cursor-not-allowed"
+              hover:bg-blue-700 text-white font-semibold 
+              px-6 py-2 rounded-md transition 
+              disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Create Idea
+            {isPending ? 'Creating...' : 'Create Idea'}
           </button>
         </div>
       </form>
