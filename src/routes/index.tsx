@@ -1,7 +1,11 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
-import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
+import {
+  queryOptions,
+  useSuspenseQuery,
+  useMutation,
+} from '@tanstack/react-query';
 import { Lightbulb } from 'lucide-react';
-import { fetchIdeas } from '@/api/ideas';
+import { fetchIdeas, deleteIdeas } from '@/api/ideas';
 import IdeaCard from '@/components/IdeaCard';
 
 import type { Idea } from '@/types';
@@ -50,12 +54,12 @@ function HomePage() {
         </div>
 
         <div className="mt-6">
-          <a
-            href="/ideas"
+          <Link
+            to="/ideas"
             className="w-full text-center inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-md transition"
           >
             View All Ideas
-          </a>
+          </Link>
         </div>
       </section>
     </div>
