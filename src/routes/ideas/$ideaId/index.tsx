@@ -43,10 +43,8 @@ function IdeaDetailsPage() {
 
   return (
     <div className="p-4">
-      <Link to="/ideas" className="text-blue-500 underline block mb-4">
-        <div className="flex items-center">
-          <ArrowLeft className="mr-2" />← Back to Ideas
-        </div>
+      <Link to="/ideas" className="text-blue-500 block mb-4">
+        <div className="flex items-center">← Back to Ideas</div>
       </Link>
       <h2 className="text-2xl font-bold">{idea.title}!</h2>
       <p className="mt-2">{idea.description}</p>
