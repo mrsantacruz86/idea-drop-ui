@@ -1,5 +1,4 @@
 import { Link } from '@tanstack/react-router';
-import { Lightbulb } from 'lucide-react';
 
 const Header = () => {
   return (
@@ -17,7 +16,7 @@ const Header = () => {
             className="flex items-center 
               space-x-2 text-gray-800"
           >
-            <Lightbulb className="w-6 h-6 text-yellow-500" />
+            <img src={'/light-bulb.svg'} alt="lightbulb" className="w-8 h-8" />
             <h1 className="text-2xl font-bold">IdeaDrop</h1>
           </Link>
         </div>
@@ -38,6 +37,23 @@ const Header = () => {
             + New Idea
           </Link>
         </nav>
+        {/* Auth Buttons */}
+        <div className="flex items-center space-x-2">
+          <Link
+            to="/login"
+            className="text-gray-600 hover:text-gray-700 font-medium 
+              transition px-3 py-2 leading-none"
+          >
+            Login
+          </Link>
+          <Link
+            to="/register"
+            className="bg-gray-100 hover:bg-gray-200 font-medium
+              text-gray-800 transition px-4 py-2 rounded-md leading-none"
+          >
+            Register
+          </Link>
+        </div>
       </div>
     </header>
   );
