@@ -4,7 +4,6 @@ import {
   useMutation,
   useSuspenseQuery,
 } from '@tanstack/react-query';
-import { ArrowLeft } from 'lucide-react';
 import { deleteIdea, fetchIdea } from '@/api/ideas';
 
 const ideaQueryOptions = (ideaId: string) =>
@@ -47,6 +46,7 @@ function IdeaDetailsPage() {
         <div className="flex items-center">← Back to Ideas</div>
       </Link>
       <h2 className="text-2xl font-bold">{idea.title}!</h2>
+      <p className="text-gray-500">By {idea.user?.name ?? 'Unknown'}</p>
       <p className="mt-2">{idea.description}</p>
 
       {/* Edit Link */}

@@ -1,6 +1,9 @@
 import { Link } from '@tanstack/react-router';
+import { useAuth } from '@/context/AuthContext';
 
 const Header = () => {
+  const { user } = useAuth();
+
   return (
     <header className="bg-white shadow">
       <div
@@ -29,30 +32,48 @@ const Header = () => {
           >
             Ideas
           </Link>
-          <Link
-            to="/ideas/new"
-            className="bg-blue-600 hover:bg-blue-700 text-white 
+          {user && (
+            <Link
+              to="/ideas/new"
+              className="bg-blue-600 hover:bg-blue-700 text-white 
             font-medium transition px-4 py-2 rounded-md leading-none"
-          >
-            + New Idea
-          </Link>
+            >
+              + New Idea
+            </Link>
+          )}
         </nav>
         {/* Auth Buttons */}
         <div className="flex items-center space-x-2">
-          <Link
-            to="/login"
-            className="text-gray-600 hover:text-gray-700 font-medium 
+          {!user ? (
+            <>
+              <Link
+                to="/login"
+                className="text-gray-600 hover:text-gray-700 font-medium 
               transition px-3 py-2 leading-none"
-          >
-            Login
-          </Link>
-          <Link
-            to="/register"
-            className="bg-gray-100 hover:bg-gray-200 font-medium
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="bg-gray-100 hover:bg-gray-200 font-medium
               text-gray-800 transition px-4 py-2 rounded-md leading-none"
-          >
-            Register
-          </Link>
+              >
+                Register
+              </Link>
+            </>
+          ) : (
+            <>
+              <span className="text-gray-700 font-medium px-2">
+                Welcome, {user.name}
+              </span>
+              <button
+                className="text-red-600 font-medium transition 
+                px-3 py-2 leading-none hover:text-red-900"
+              >
+                Logout
+              </button>
+            </>
+          )}
         </div>
       </div>
     </header>

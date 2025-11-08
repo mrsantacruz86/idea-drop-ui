@@ -1,4 +1,7 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
+import { useMutation } from '@tanstack/react-query';
+import { loginUser } from '@/api/auth';
+import { useAuth } from '@/context/AuthContext';
 import { useState } from 'react';
 
 export const Route = createFileRoute('/(auth)/login/')({
@@ -6,14 +9,42 @@ export const Route = createFileRoute('/(auth)/login/')({
 });
 
 function LoginPage() {
+  const navigate = useNavigate();
+  const { setAccessToken, setUser } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: loginUser,
+    onSuccess: (data) => {
+      setAccessToken(data.accessToken);
+      setUser(data.user);
+      navigate({ to: '/ideas' });
+    },
+    onError: (err: any) => {
+      setError(err.message);
+    },
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    await mutateAsync({ email, password });
+  };
+
   return (
     <div className="max-w-md mx-auto">
       <h1 className="text-3xl font-bold mb-6">Login</h1>
-      <form className="space-y-4">
+      {error && (
+        <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4">
+          {error}
+        </div>
+      )}
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="email"
+          name="email"
           className="w-full border border-gray rounded-md p-2"
           placeholder="Email"
           value={email}
@@ -22,6 +53,7 @@ function LoginPage() {
         />
         <input
           type="password"
+          name="password"
           className="w-full border border-gray rounded-md p-2"
           placeholder="password"
           value={password}
@@ -29,11 +61,12 @@ function LoginPage() {
           autoComplete="off"
         />
         <button
+          type="submit"
           className="bg-blue-600 hover:bg-blue-700 text-white 
-          font-semibold px-4 py-2 rounded-md w-full
-          disabled:oapity-50"
+          font-semibold px-4 py-2 rounded-md w-full disabled:oapity-50"
+          disabled={isPending || !email.trim()}
         >
-          Login
+          {isPending ? 'Login In...' : 'Login'}
         </button>
       </form>
       <p className="text-sm text-center mt-4">
